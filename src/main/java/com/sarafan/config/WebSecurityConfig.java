@@ -22,8 +22,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .antMatcher("/")
                 .authorizeRequests()
-                .mvcMatchers("/").permitAll()
+                .antMatchers("/**", "/login**", "/js/**", "/error**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()

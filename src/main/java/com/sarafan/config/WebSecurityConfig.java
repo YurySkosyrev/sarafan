@@ -1,31 +1,34 @@
 package com.sarafan.config;
 
-import com.sarafan.domain.User;
-import com.sarafan.repo.UserDetailRepo;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
+import com.sarafan.security.CustomOidcUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import java.security.Principal;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+@EnableWebSecurity
+public class WebSecurityConfig {
+
+
+    private final CustomOidcUserService customOidcUserService;
+
+    public WebSecurityConfig(CustomOidcUserService customOidcUserService) {
+        this.customOidcUserService = customOidcUserService;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .mvcMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .csrf().disable();
-    }
-
-    @Bean
-    public PrincipalExtractor principalExtractor(UserDetailRepo userDetailRepo) {
-        return map -> {
-            return new User();
-        };
+                .oauth2Login()
+                .userInfoEndpoint()
+                .oidcUserService(customOidcUserService);
+        return http.build();
     }
 }

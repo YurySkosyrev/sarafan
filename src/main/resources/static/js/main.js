@@ -102,9 +102,7 @@ var app = new Vue({
     '<div>' +
         '<div v-if="!profile">Необходимо авторизовать через <a href="/login">Google</a></div>'+
         '<div v-else>' +
-        '<div><form action="/logout" method=post>\n' +
-        '    <input type="submit" value="logout">\n' +
-        '</form></div>' +
+        '<div>{{profile.attributes.given_name}}&nbsp;<a href="/logout">Выйти</a> </div>' +
         '<messages-list :messages="messages" />' +
         '</div>' +
     '</div>',

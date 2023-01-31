@@ -1,7 +1,7 @@
 package com.sarafan.security;
 
 import com.sarafan.domain.User;
-import com.sarafan.repo.UserDetailRepo;
+import com.sarafan.repo.UserDetailsRepo;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
@@ -16,9 +16,9 @@ import java.util.Map;
 public class CustomOidcUserService extends OidcUserService {
 
 
-    private final UserDetailRepo userDetailRepo;
+    private final UserDetailsRepo userDetailRepo;
 
-    public CustomOidcUserService(UserDetailRepo userDetailRepo) {
+    public CustomOidcUserService(UserDetailsRepo userDetailRepo) {
         this.userDetailRepo = userDetailRepo;
     }
 

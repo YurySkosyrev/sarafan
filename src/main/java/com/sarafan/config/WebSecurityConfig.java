@@ -22,10 +22,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .antMatcher("/")
+                .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/**", "/login**", "/js/**", "/error**").permitAll()
+                .antMatchers("/**","/login**","/logout**", "/js/**", "/error**").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .logout().clearAuthentication(true)
+                .deleteCookies().invalidateHttpSession(true)
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
